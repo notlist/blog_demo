@@ -16,14 +16,14 @@ var Logger *logrus.Logger
 var uid string
 
 func Init() {
-	setUid()
+	SetUid()
 	setLogger()
 }
 
 // 定义一个结构体获取返回体的数据
-type bodyLogWriter struct {
+type BodyLogWriter struct {
 	gin.ResponseWriter
-	body *bytes.Buffer
+	Body *bytes.Buffer
 }
 
 func setLogger() {
@@ -82,60 +82,18 @@ func LogErrorInfoToFile(fields logrus.Fields) {
 }
 
 // 把二进制写入缓冲区
-func (w bodyLogWriter) Write(b []byte) (int, error) {
-	w.body.Write(b)
+func (w BodyLogWriter) Write(b []byte) (int, error) {
+	w.Body.Write(b)
 	return w.ResponseWriter.Write(b)
 }
 
 // 把字符串写入缓冲区
-func (w bodyLogWriter) WriteString(s string) (int, error) {
-	w.body.WriteString(s)
+func (w BodyLogWriter) WriteString(s string) (int, error) {
+	w.Body.WriteString(s)
 	return w.ResponseWriter.WriteString(s)
 }
 
-// 获取返回体的中间件
-func GinBodyLogMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
-		c.Writer = blw
-		c.Next()
-		responseStr := blw.body.String()
-		//开始时间
-		startTime := time.Now()
-		//结束时间
-		endTime := time.Now()
-		//执行时间
-		latencyTime := endTime.Sub(startTime)
-		//请求方式
-		reqMethod := c.Request.Method
-		//请求路由
-		reqUri := c.Request.RequestURI
-		// 状态码
-		statusCode := c.Writer.Status()
-		//请求ip
-		clientIP := c.ClientIP()
-		//请求参数
-		reqParams := c.Request.Body
-		//请求ua
-		reqUa := c.Request.UserAgent()
-		var resultBody logrus.Fields
-		resultBody = make(map[string]interface{})
-		resultBody["response"] = responseStr
-		resultBody["requestUri"] = reqUri
-		resultBody["clientIp"] = clientIP
-		resultBody["body"] = reqParams
-		resultBody["userAgent"] = reqUa
-		resultBody["requestMethod"] = reqMethod
-		resultBody["startTime"] = startTime
-		resultBody["endTime"] = endTime
-		resultBody["latencyTime"] = latencyTime
-		resultBody["statusCode"] = statusCode
-		LogErrorInfoToFile(resultBody)
-		setUid()
-	}
-}
-
-func setUid() {
+func SetUid() {
 	uid = uuid.New().String()
 }
 
@@ -157,7 +115,7 @@ func (hook *LogrusHook) Fire(entry *logrus.Entry) error {
 	return nil
 }
 
-func getErrorFileAndLine(err error) {
+func GetErrorFileAndLine(err error) {
 	//获取上层运行时的文件以及行数
 	for skip := 1; true; skip++ {
 		//获取上层运行时的文件以及行数

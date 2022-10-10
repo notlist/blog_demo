@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"goadmin/common/log"
 	"goadmin/controller"
+	"goadmin/middleware"
 	"goadmin/routes/group"
 )
 
@@ -11,7 +11,7 @@ func SetRouter() *gin.Engine {
 	//r := gin.Default()
 	r := gin.New()
 	r.Use(gin.Recovery())
-	r.Use(log.GinBodyLogMiddleware())
+	r.Use(middleware.GinBodyLogMiddleware())
 
 	group.UserGroup(r)
 
