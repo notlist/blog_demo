@@ -1,6 +1,6 @@
 mysql:
-  url: 101.200.222.113
+  url: 
   userName: root
-  password: j4Wl1DPH
-  dbname: test
+  password: 
+  dbname: 
   post: 3306
