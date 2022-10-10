@@ -72,6 +72,7 @@ func setLogger() {
 	Logger.SetFormatter(&logrus.TextFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
 	})
+	//添加hook
 	Logger.AddHook(&LogrusHook{})
 }
 
@@ -99,20 +100,6 @@ func SetUid() {
 
 func GetNewUid() string {
 	return uid
-}
-
-type LogrusHook struct {
-}
-
-// 设置所有的日志等级都走这个钩子
-func (hook *LogrusHook) Levels() []logrus.Level {
-	return logrus.AllLevels
-}
-
-// 修改其中的数据，或者进行其他操作
-func (hook *LogrusHook) Fire(entry *logrus.Entry) error {
-	entry.Data["request_id"] = GetNewUid()
-	return nil
 }
 
 func GetErrorFileAndLine(err error) {
