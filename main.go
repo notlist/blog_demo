@@ -2,20 +2,25 @@ package main
 
 import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"goadmin/common/config"
+	"goadmin/common/log"
+	"goadmin/common/mysql"
 	"goadmin/routes"
 )
 
 func main() {
-	//连接数据库
-	err := config.InitMySql()
+	//初始化数据库
+	err := mysql.InitMySql()
 	if err != nil {
 		panic(err)
 	}
+	//初始化log
+	log.Init()
+	ssv := "宋思薇"
+	log.Logger.Errorf("error is:%s", ssv)
 	//程序退出关闭数据库连接
-	defer config.Close()
+	defer mysql.Close()
 	//绑定模型
-	//config.SqlSession.AutoMigrate(&entity.User{})
+	//mysql.SqlSession.AutoMigrate(&entity.User{})
 	//注册路由
 	r := routes.SetRouter()
 	//启动端口为8081的项目

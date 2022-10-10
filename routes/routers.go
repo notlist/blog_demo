@@ -2,11 +2,14 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"goadmin/common/log"
 	"goadmin/controller"
 )
 
 func SetRouter() *gin.Engine {
-	r := gin.Default()
+	r := gin.New()
+	//r = gin.Default()
+	r.Use(log.GinBodyLogMiddleware())
 
 	/**
 	用户User路由组
