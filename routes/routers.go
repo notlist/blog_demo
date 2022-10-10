@@ -4,17 +4,21 @@ import (
 	"github.com/gin-gonic/gin"
 	"goadmin/common/log"
 	"goadmin/controller"
+	"goadmin/routes/group"
 )
 
 func SetRouter() *gin.Engine {
+	//r := gin.Default()
 	r := gin.New()
-	//r = gin.Default()
+	r.Use(gin.Recovery())
 	r.Use(log.GinBodyLogMiddleware())
+
+	group.UserGroup(r)
 
 	/**
 	用户User路由组
 	*/
-	userGroup := r.Group("user")
+	userGroup := r.Group("user/test")
 	{
 		//增加用户User
 		userGroup.POST("/add", controller.CreateUser)

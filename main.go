@@ -13,12 +13,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//初始化log
-	log.Init()
-	ssv := "宋思薇"
-	log.Logger.Errorf("error is:%s", ssv)
 	//程序退出关闭数据库连接
 	defer mysql.Close()
+
+	//初始化log
+	log.Init()
 	//绑定模型
 	//mysql.SqlSession.AutoMigrate(&entity.User{})
 	//注册路由
