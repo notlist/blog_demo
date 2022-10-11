@@ -7,17 +7,10 @@ import (
 
 // 用户路由组
 func UserGroup(r *gin.Engine) {
-
-	group := r.Group("user")
+	userGroup := r.Group("user/test")
 	{
-		//增加用户User
-		group.POST("/add", controller.CreateUser)
-		//查看所有的User
-		group.GET("/all", controller.GetUserList)
-		//修改某个User
-		group.POST("/update/", controller.UpdateUser)
-		//删除某个User
-		group.POST("/delete/:id/", controller.DeleteUserById)
+		userGroup.POST("/login", controller.LoginUser) //增加用户User
+		userGroup.POST("/all", controller.SignUser)    //查看所有的User
 	}
 
 }

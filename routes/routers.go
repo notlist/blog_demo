@@ -18,16 +18,13 @@ func SetRouter() *gin.Engine {
 	/**
 	用户User路由组
 	*/
-	userGroup := r.Group("user/test")
+	userGroup := r.Group("user")
 	{
 		//增加用户User
-		userGroup.POST("/add", controller.CreateUser)
+		userGroup.POST("/login", controller.LoginUser)
 		//查看所有的User
-		userGroup.GET("/all", controller.GetUserList)
-		//修改某个User
-		userGroup.POST("/update/", controller.UpdateUser)
-		//删除某个User
-		userGroup.POST("/delete/:id/", controller.DeleteUserById)
+		userGroup.POST("/sign", controller.SignUser)
+
 	}
 
 	return r
