@@ -3,13 +3,13 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"goadmin/common/rsp"
-	"goadmin/request"
+	"goadmin/dto"
 	"goadmin/service"
 )
 
 func SignUser(c *gin.Context) {
 	//定义一个User变量
-	var user request.UserAddReq
+	var user dto.UserAddReq
 	//将调用后端的request请求中的body数据根据json格式解析到User结构变量中
 	c.BindJSON(&user)
 	//将被转换的user变量传给service层的CreateUser方法，进行User的新建
@@ -25,7 +25,7 @@ func SignUser(c *gin.Context) {
 func LoginUser(c *gin.Context) {
 	c.Request.Context()
 	//定义一个User变量
-	var user request.UserAddReq
+	var user dto.UserAddReq
 	//将调用后端的request请求中的body数据根据json格式解析到User结构变量中
 	c.BindJSON(&user)
 	//将被转换的user变量传给service层的CreateUser方法，进行User的新建

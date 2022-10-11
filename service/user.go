@@ -4,16 +4,15 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"goadmin/common/log"
+	"goadmin/common/util"
 	"goadmin/dao/user_dao"
+	"goadmin/dto"
 	"goadmin/entity"
-	"goadmin/request"
-	// 导入session包
-	"github.com/gin-contrib/sessions"
-
+	"strconv"
 	"time"
 )
 
-func SignUser(req *request.UserAddReq) (err error) {
+func SignUser(req *dto.UserAddReq) (err error) {
 	dao := user_dao.UserDaoNew()
 
 	if req.Name == "" {
@@ -41,7 +40,7 @@ func SignUser(req *request.UserAddReq) (err error) {
 	return user_dao.UserDaoNew().Add(userInfo)
 }
 
-func LoginUser(c *gin.Context, req *request.UserAddReq) (err error) {
+func LoginUser(c *gin.Context, req *dto.UserAddReq) (err error) {
 	dao := user_dao.UserDaoNew()
 	if req.Name == "" || req.Password == "" {
 		return errors.New("用户名/密码不能为空")
@@ -57,40 +56,6 @@ func LoginUser(c *gin.Context, req *request.UserAddReq) (err error) {
 	if info == nil {
 		return errors.New("用户名或密码错误")
 	}
-	session := sessions.Default(c)
-	session.Set(info.UserId, 1)
+	util.SetCurrentUser(c, strconv.FormatInt(info.UserId, 10))
 	return nil
 }
-
-///*
-//*
-//获取user集合
-//*/
-//func GetAllUser() (userList []*entity.User, err error) {
-//
-//	return user_dao.SelectList()
-//}
-//
-///*
-//*
-//根据id删除user
-//*/
-//func DeleteUserById(id string) (err error) {
-//	return user_dao.DeleteById(id)
-//}
-//
-///*
-//*
-//根据id查询用户User
-//*/
-//func GetUserById(id int) (user *entity.User, err error) {
-//	return user_dao.GetUserById(id)
-//}
-//
-///*
-//*
-//更新用户信息
-//*/
-//func UpdateUser(user *entity.User) (err error) {
-//	return user_dao.UpdateUser(user)
-//}

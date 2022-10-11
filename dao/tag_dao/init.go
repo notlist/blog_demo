@@ -18,7 +18,7 @@ type TagImpl struct {
 	db *gorm.DB
 }
 
-func UserDaoNew() *TagImpl {
+func TagDaoNew() *TagImpl {
 	return &TagImpl{
 		db: mysql.MysqlSession(),
 	}
