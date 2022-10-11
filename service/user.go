@@ -1,16 +1,25 @@
 package service
 
 import (
-	"goadmin/dao"
+	"goadmin/dao/user_dao"
 	"goadmin/entity"
+	"goadmin/request"
 )
 
 /*
 *
 新建User信息
 */
-func CreateUser(user *entity.User) (err error) {
-	return dao.Create(user)
+func CreateUser(req *request.UserAddReq) (err error) {
+	userInfo := &entity.User{
+		Name:     req.Name,
+		NickName: req.NickName,
+		Avatar:   req.Avatar,
+		Password: req.Password,
+		Email:    req.Email,
+		Mobile:   req.Mobile,
+	}
+	return user_dao.UserDaoNew().Add(userInfo)
 }
 
 /*
@@ -19,7 +28,7 @@ func CreateUser(user *entity.User) (err error) {
 */
 func GetAllUser() (userList []*entity.User, err error) {
 
-	return dao.SelectList()
+	return user_dao.SelectList()
 }
 
 /*
@@ -27,7 +36,7 @@ func GetAllUser() (userList []*entity.User, err error) {
 根据id删除user
 */
 func DeleteUserById(id string) (err error) {
-	return dao.DeleteById(id)
+	return user_dao.DeleteById(id)
 }
 
 /*
@@ -35,7 +44,7 @@ func DeleteUserById(id string) (err error) {
 根据id查询用户User
 */
 func GetUserById(id int) (user *entity.User, err error) {
-	return dao.GetUserById(id)
+	return user_dao.GetUserById(id)
 }
 
 /*
@@ -43,5 +52,5 @@ func GetUserById(id int) (user *entity.User, err error) {
 更新用户信息
 */
 func UpdateUser(user *entity.User) (err error) {
-	return dao.UpdateUser(user)
+	return user_dao.UpdateUser(user)
 }

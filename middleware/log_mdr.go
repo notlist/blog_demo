@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"goadmin/common/log"
-	"time"
 )
 
 // 获取返回体的中间件
@@ -15,12 +14,7 @@ func GinBodyLogMiddleware() gin.HandlerFunc {
 		c.Writer = blw
 		c.Next()
 		responseStr := blw.Body.String()
-		//开始时间
-		startTime := time.Now()
-		//结束时间
-		endTime := time.Now()
-		//执行时间
-		latencyTime := endTime.Sub(startTime)
+
 		//请求方式
 		reqMethod := c.Request.Method
 		//请求路由
@@ -41,9 +35,6 @@ func GinBodyLogMiddleware() gin.HandlerFunc {
 		resultBody["reqParams"] = reqParams
 		resultBody["userAgent"] = reqUa
 		resultBody["requestMethod"] = reqMethod
-		resultBody["startTime"] = startTime
-		resultBody["endTime"] = endTime
-		resultBody["latencyTime"] = latencyTime
 		resultBody["statusCode"] = statusCode
 		log.LogErrorInfoToFile(resultBody)
 		log.SetUid()

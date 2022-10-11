@@ -8,7 +8,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"os"
 	"path"
-	"runtime"
 	"time"
 )
 
@@ -64,7 +63,6 @@ func setLogger() {
 	Logger = logrus.New()
 	//设置输出
 	Logger.Out = src
-	//这里我觉得应该是交给需要封装的方法去确认使用什么等级的日志和什么格式
 	//设置日志级别
 	Logger.SetLevel(logrus.TraceLevel)
 	Logger.SetReportCaller(true)
@@ -100,22 +98,4 @@ func SetUid() {
 
 func GetNewUid() string {
 	return uid
-}
-
-func GetErrorFileAndLine(err error) {
-	//获取上层运行时的文件以及行数
-	for skip := 1; true; skip++ {
-		//获取上层运行时的文件以及行数
-		_, file, line, ok := runtime.Caller(skip)
-		if ok {
-			var resultBody logrus.Fields
-			resultBody = make(map[string]interface{})
-			resultBody["file_path"] = file
-			resultBody["error_line"] = line
-			resultBody["error_message"] = err.Error()
-			LogErrorInfoToFile(resultBody)
-		} else {
-			break
-		}
-	}
 }

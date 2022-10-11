@@ -6,13 +6,14 @@ func (User) TableName() string {
 }
 
 type User struct {
-	Id         int    `json:"id"`
-	Name       string `json:"name"` //用户名
-	NickName   string `json:"nickName"`
-	Avatar     string `json:"avatar"`
-	Password   string `json:"password"`
-	Email      string `json:"email"`
-	Mobile     string `json:"mobile"`
-	DelStatus  int    `json:"delStatus"`
-	CreateTime int64  `json:"createTime"`
+	Id         int    `json:"id" gorm:"column:id"`
+	Name       string `json:"name" gorm:"column:name"`
+	NickName   string `json:"nick_name" gorm:"column:nick_name"`
+	Avatar     string `json:"avatar"  gorm:"column:avatar"`
+	Password   string `json:"password" gorm:"column:password"`
+	Email      string `json:"email" gorm:"column:email"`
+	Mobile     string `json:"mobile" gorm:"column:mobile"`
+	DelStatus  int    `json:"del_status" gorm:"column:del_status"`
+	UpdateTime int64  `json:"update_time" gorm:"column:update_time"`
+	CreateTime int64  `json:"create_time" gorm:"create_time"`
 }
