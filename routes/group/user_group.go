@@ -10,7 +10,7 @@ func UserGroup(r *gin.Engine) {
 	userGroup := r.Group("user")
 	{
 		userGroup.POST("/login", controller.LoginUser) //登录
-		userGroup.POST("/all", controller.SignUser)    //注册
+		userGroup.POST("/sign", controller.SignUser)   //注册
 	}
 
 }

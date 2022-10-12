@@ -16,16 +16,42 @@ func BlogList(c *gin.Context) {
 	//将调用后端的request请求中的body数据根据json格式解析到User结构变量中
 	c.BindJSON(&req)
 
+	resp, err := service.BlogList(req.UserId, &req)
+	if err != nil {
+		rsp.Error(c, err.Error())
+	} else {
+		rsp.Success(c, "success", resp)
+	}
+}
+
+func CreateBlog(c *gin.Context) {
+	var req dto.BlogCreateReq
+
+	c.BindJSON(&req)
+
 	userId := util.GetCurrentUser(c)
 	if userId == "" {
 		rsp.Error(c, errors.New("请先登录").Error())
 	}
 	uid, _ := strconv.ParseInt(userId, 10, 64)
 
-	resp, err := service.BlogList(uid, &req)
+	err := service.CreateBlog(uid, &req)
 	if err != nil {
 		rsp.Error(c, err.Error())
 	} else {
-		rsp.Success(c, "success", resp)
+		rsp.Success(c, "success", nil)
 	}
+
+}
+
+func EditBlog(c *gin.Context) {
+
+}
+
+func DeleteBlog(c *gin.Context) {
+
+}
+
+func BLogDetail(c *gin.Context) {
+
 }

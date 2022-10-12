@@ -9,11 +9,11 @@ import (
 func BlogGroup(r *gin.Engine) {
 	blogGroup := r.Group("blog")
 	{
-		blogGroup.GET("/list", controller.BlogList)     //列表
-		blogGroup.GET("/detail", controller.SignUser)   //详情
-		blogGroup.POST("/add", controller.LoginUser)    //新增
-		blogGroup.POST("/edit", controller.LoginUser)   //编辑
-		blogGroup.POST("/delete", controller.LoginUser) //删除
+		blogGroup.GET("/list", controller.BlogList)      //列表
+		blogGroup.GET("/detail", controller.BLogDetail)  //详情
+		blogGroup.POST("/add", controller.CreateBlog)    //新增
+		blogGroup.POST("/edit", controller.EditBlog)     //编辑
+		blogGroup.POST("/delete", controller.DeleteBlog) //删除
 
 	}
 }

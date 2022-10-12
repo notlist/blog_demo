@@ -1,9 +1,9 @@
 package user_dao
 
 import (
-	"github.com/jinzhu/gorm"
 	"goadmin/common/mysql"
 	"goadmin/entity"
+	"gorm.io/gorm"
 )
 
 type UserDao interface {

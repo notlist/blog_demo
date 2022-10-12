@@ -14,8 +14,6 @@ func main() {
 		panic(err)
 	}
 	//程序退出关闭数据库连接
-	defer mysql.Close()
-
 	//初始化log
 	log.Init()
 	//绑定模型

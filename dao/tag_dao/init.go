@@ -1,16 +1,17 @@
 package tag_dao
 
 import (
-	"github.com/jinzhu/gorm"
 	"goadmin/common/mysql"
 	"goadmin/entity"
+	"gorm.io/gorm"
 )
 
 type TagDao interface {
-	Add(user *entity.Tag) error
+	Add(data *entity.Tag) error
+	BatchAdd(data []*entity.Tag) error
 	GetAll(cond map[string]interface{}) ([]*entity.Tag, error)
 	GetOne(cond map[string]interface{}) (*entity.Tag, error)
-	Update(cond map[string]interface{}, updateData entity.Tag) error
+	Update(cond map[string]interface{}, updateData map[string]interface{}) error
 	Delete(cond map[string]interface{}) error
 }
 

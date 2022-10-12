@@ -1,13 +1,13 @@
 package blog_dao
 
 import (
-	"github.com/jinzhu/gorm"
 	"goadmin/common/log"
 	"goadmin/entity"
+	"gorm.io/gorm"
 )
 
-func (o *BlogImpl) Add(user *entity.Blog) error {
-	res := o.db.Create(user)
+func (o *BlogImpl) Add(blog *entity.Blog) error {
+	res := o.Db.Create(&blog)
 	if res == nil || res.Error != nil {
 		log.Logger.Errorf("add record err:%+v", res.Error)
 		return res.Error
@@ -16,7 +16,7 @@ func (o *BlogImpl) Add(user *entity.Blog) error {
 }
 func (o *BlogImpl) GetAll(cond map[string]interface{}) ([]*entity.Blog, error) {
 	list := make([]*entity.Blog, 0)
-	res := o.db.Where(cond).Find(&list)
+	res := o.Db.Where(cond).Find(&list)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
 			return nil, nil
@@ -28,7 +28,7 @@ func (o *BlogImpl) GetAll(cond map[string]interface{}) ([]*entity.Blog, error) {
 }
 func (o *BlogImpl) GetOne(cond map[string]interface{}) (*entity.Blog, error) {
 	info := &entity.Blog{}
-	res := o.db.Where(cond).Find(&info)
+	res := o.Db.Where(cond).Find(&info)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
 			return nil, nil
@@ -39,7 +39,7 @@ func (o *BlogImpl) GetOne(cond map[string]interface{}) (*entity.Blog, error) {
 	return info, nil
 }
 func (o *BlogImpl) Update(cond map[string]interface{}, updateData entity.Blog) error {
-	res := o.db.Table("blog").Where(cond).Update(&updateData)
+	res := o.Db.Table("blog").Where(cond).Updates(&updateData)
 	if res == nil || res.Error != nil {
 		log.Logger.Errorf("Update record err:%+v", res.Error)
 		return res.Error
@@ -47,7 +47,7 @@ func (o *BlogImpl) Update(cond map[string]interface{}, updateData entity.Blog) e
 	return nil
 }
 func (o *BlogImpl) Delete(cond map[string]interface{}) error {
-	res := o.db.Where(cond).Delete(&entity.Blog{})
+	res := o.Db.Where(cond).Delete(&entity.Blog{})
 	if res == nil || res.Error != nil {
 		log.Logger.Errorf("Update record err:%+v", res.Error)
 		return res.Error

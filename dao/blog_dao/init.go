@@ -1,9 +1,9 @@
 package blog_dao
 
 import (
-	"github.com/jinzhu/gorm"
 	"goadmin/common/mysql"
 	"goadmin/entity"
+	"gorm.io/gorm"
 )
 
 type BlogDao interface {
@@ -15,11 +15,11 @@ type BlogDao interface {
 }
 
 type BlogImpl struct {
-	db *gorm.DB
+	Db *gorm.DB
 }
 
 func BlogDaoNew() *BlogImpl {
 	return &BlogImpl{
-		db: mysql.MysqlSession(),
+		Db: mysql.MysqlSession(),
 	}
 }

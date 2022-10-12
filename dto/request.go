@@ -8,5 +8,12 @@ type UserAddReq struct {
 }
 
 type BlogListReq struct {
-	Tags []string `json:"tags"`
+	UserId int64    `json:"user_id"`
+	Tags   []string `json:"tags"`
+}
+
+type BlogCreateReq struct {
+	Title   string   `json:"title"`
+	Content string   `json:"content"`
+	Tags    []string `json:"tags"`
 }

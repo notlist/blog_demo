@@ -36,7 +36,7 @@ func (o *UserImpl) GetOne(cond map[string]interface{}) (*entity.User, error) {
 	return user, nil
 }
 func (o *UserImpl) Update(cond map[string]interface{}, updateData entity.User) error {
-	res := o.db.Table("sys_user").Where(cond).Update(&updateData)
+	res := o.db.Table("sys_user").Where(cond).Updates(&updateData)
 	if res == nil || res.Error != nil {
 		log.Logger.Errorf("Update record err:%+v", res.Error)
 		return res.Error

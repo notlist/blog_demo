@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`
 (
     `id`          int(64) unsigned NOT NULL AUTO_INCREMENT,
-    `user_id`     int(64)          NOT NULL default 0 comment '用户id',
+    `user_id`     bigint       NOT NULL default 0 comment '用户id',
     `name`        varchar(50)      NOT NULL COMMENT '用户名',
     `password`    varchar(100)              DEFAULT NULL COMMENT '密码',
     `email`       varchar(100)              DEFAULT NULL COMMENT '邮箱',
@@ -21,8 +21,8 @@ DROP TABLE IF EXISTS `blog`;
 CREATE TABLE `blog`
 (
     `id`          int(64) unsigned NOT NULL AUTO_INCREMENT,
-    `blog_id`     int(64)          NOT NULL COMMENT '博客id',
-    `user_id`     int(64)          NOT NULL default 0 comment '用户id',
+    `blog_id`     bigint          NOT NULL COMMENT '博客id',
+    `user_id`     bigint          NOT NULL default 0 comment '用户id',
     `title`       varchar(100)              DEFAULT NULL COMMENT '博客题目',
     `content`     varchar(100)              DEFAULT NULL COMMENT '博客内容',
     `update_time` bigint(50)                DEFAULT NULL COMMENT '更新时间',
@@ -37,8 +37,8 @@ DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag`
 (
     `id`          int(64) unsigned NOT NULL AUTO_INCREMENT,
-    `user_id`     int(64)          NOT NULL default 0 comment '用户id',
-    `blog_id`     int(64)          NOT NULL COMMENT '博客id',
+    `user_id`     bigint          NOT NULL default 0 comment '用户id',
+    `blog_id`     bigint          NOT NULL COMMENT '博客id',
     `tag_name`    varchar(100)              DEFAULT NULL COMMENT '标签题目',
     `update_time` bigint(50)                DEFAULT NULL COMMENT '更新时间',
     `create_time` bigint(50)                DEFAULT NULL COMMENT '创建时间',

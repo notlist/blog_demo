@@ -2,9 +2,10 @@ package mysql
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"goadmin/common/log"
 	"gopkg.in/yaml.v2"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"io/ioutil"
 )
 
@@ -36,11 +37,12 @@ func (c *Conf) getConf() *Conf {
 
 func InitMySql() (err error) {
 	var c Conf
-	SqlSession, err = gorm.Open(DRIVER, c.ConnectUrl())
+	SqlSession, err = gorm.Open(mysql.Open(c.ConnectUrl()), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		log.Logger.Error("mysql init err")
+		return err
 	}
-	return SqlSession.DB().Ping()
+	return nil
 }
 
 func (c Conf) ConnectUrl() string {
@@ -56,8 +58,4 @@ func (c Conf) ConnectUrl() string {
 
 func MysqlSession() *gorm.DB {
 	return SqlSession
-}
-
-func Close() {
-	SqlSession.Close()
 }
