@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// TODO 更改根据标签的查询查询
 func BlogList(userId int64, req *dto.BlogListReq) ([]dto.BlogListResp, error) {
 	blogDao := blog_dao.BlogDaoNew()
 	tagDao := tag_dao.TagDaoNew()
@@ -17,6 +18,7 @@ func BlogList(userId int64, req *dto.BlogListReq) ([]dto.BlogListResp, error) {
 		return nil, errors.New("没有传入uid")
 	}
 	cond := make(map[string]interface{})
+	tagsMap := make(map[int64][]string)
 	//获取该用户的所有标签
 	if len(req.Tags) > 0 {
 		tags, err := tagDao.GetAll(map[string]interface{}{
@@ -30,6 +32,14 @@ func BlogList(userId int64, req *dto.BlogListReq) ([]dto.BlogListResp, error) {
 		tagNames := make([]string, 0)
 		for _, v := range tags {
 			tagNames = append(tagNames, v.TagName)
+
+			if tagArr, ok := tagsMap[v.BlogId]; ok {
+				tagArr = append(tagArr, v.TagName)
+				tagsMap[v.BlogId] = tagArr
+			} else {
+				tagArr = make([]string, 0)
+				tagsMap[v.BlogId] = tagArr
+			}
 		}
 		cond["tag"] = tagNames
 	}
@@ -48,6 +58,7 @@ func BlogList(userId int64, req *dto.BlogListReq) ([]dto.BlogListResp, error) {
 			Content:    v.Content,
 			UpdateTime: v.UpdateTime,
 			CreateTime: v.CreateTime,
+			Tags:       tagsMap[v.BlogId],
 		}
 		blogInfo = append(blogInfo, temp)
 	}
@@ -82,5 +93,10 @@ func CreateBlog(userId int64, req *dto.BlogCreateReq) error {
 	}
 	//tags写入数据库
 	tagDao.BatchAdd(tagInfos)
+	return nil
+}
+
+func EditBlog(userId int64, req *dto.BlogEditReq) error {
+
 	return nil
 }
