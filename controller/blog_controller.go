@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"goadmin/common/rsp"
 	"goadmin/common/util"
@@ -16,6 +17,9 @@ func BlogList(c *gin.Context) {
 	c.BindJSON(&req)
 
 	userId := util.GetCurrentUser(c)
+	if userId == "" {
+		rsp.Error(c, errors.New("请先登录").Error())
+	}
 	uid, _ := strconv.ParseInt(userId, 10, 64)
 
 	resp, err := service.BlogList(uid, &req)

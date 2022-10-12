@@ -8,6 +8,9 @@ import (
 func GetCurrentUser(c *gin.Context) string {
 	session := sessions.Default(c)
 	info := session.Get("userId")
+	if info == nil {
+		return ""
+	}
 	userInfo := info.(string) // 类型转换一下
 	return userInfo
 }
