@@ -11,7 +11,7 @@ import (
 type ResultRsp struct {
 	code int         `json:"code"`
 	msg  string      `json:"success"`
-	data interface{} `json:data"`
+	data interface{} `json:"data"`
 }
 
 // 正确状态处理
