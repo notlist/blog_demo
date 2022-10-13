@@ -62,7 +62,7 @@ func (o *TagImpl) Update(cond map[string]interface{}, data map[string]interface{
 func (o *TagImpl) Delete(cond map[string]interface{}) error {
 	res := o.db.Where(cond).Delete(&entity.Tag{})
 	if res == nil || res.Error != nil {
-		log.Logger.Errorf("Update record err:%+v", res.Error)
+		log.Logger.Errorf("delete record err:%+v", res.Error)
 		return res.Error
 	}
 	return nil

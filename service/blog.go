@@ -104,12 +104,18 @@ func EditBlog(userId int64, req *dto.BlogEditReq) error {
 		"blog_id": req.BlogId,
 		"user_id": userId,
 	}
-	_ = blogDao.Update(cond, map[string]interface{}{
+	err := blogDao.Update(cond, map[string]interface{}{
 		"title":       req.Title,
 		"content":     req.Content,
 		"update_time": time.Now().Unix(),
 	})
-	tagDao.Delete(cond)
+	if err != nil {
+		return err
+	}
+	err = tagDao.Delete(cond)
+	if err != nil {
+		return err
+	}
 	tagInfos := make([]*entity.Tag, 0)
 	for _, v := range req.Tags {
 		temp := entity.Tag{
@@ -122,6 +128,21 @@ func EditBlog(userId int64, req *dto.BlogEditReq) error {
 		tagInfos = append(tagInfos, &temp)
 	}
 	//tags写入数据库
-	tagDao.BatchAdd(tagInfos)
-	return nil
+	err = tagDao.BatchAdd(tagInfos)
+	return err
+}
+
+func DeleteBlog(userId int64, req *dto.BlogDeleteReq) error {
+	blogDao := blog_dao.BlogDaoNew()
+	tagDao := tag_dao.TagDaoNew()
+	cond := map[string]interface{}{
+		"user_id": userId,
+		"blog_id": req.BlogId,
+	}
+	err := blogDao.Delete(cond)
+	if err != nil {
+		return err
+	}
+	err = tagDao.Delete(cond)
+	return err
 }

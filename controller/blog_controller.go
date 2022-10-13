@@ -67,7 +67,24 @@ func EditBlog(c *gin.Context) {
 }
 
 func DeleteBlog(c *gin.Context) {
+	var req dto.BlogDeleteReq
 
+	c.BindJSON(&req)
+
+	userId := util.GetCurrentUser(c)
+	if userId == "" {
+		rsp.Error(c, errors.New("请先登录").Error())
+		return
+	}
+
+	uid, _ := strconv.ParseInt(userId, 10, 64)
+
+	err := service.DeleteBlog(uid, &req)
+	if err != nil {
+		rsp.Error(c, err.Error())
+	} else {
+		rsp.Success(c, "success", nil)
+	}
 }
 
 func BLogDetail(c *gin.Context) {

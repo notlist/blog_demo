@@ -24,3 +24,7 @@ type BlogEditReq struct {
 	Content string   `json:"content"`
 	Tags    []string `json:"tags"`
 }
+
+type BlogDeleteReq struct {
+	BlogId int64 `json:"blog_id"`
+}
