@@ -17,35 +17,36 @@ func BlogList(userId int64, req *dto.BlogListReq) ([]dto.BlogListResp, error) {
 	if userId == 0 {
 		return nil, errors.New("没有传入uid")
 	}
-	cond := make(map[string]interface{})
+	tagCond := make(map[string]interface{})
 	tagsMap := make(map[int64][]string)
 	//获取该用户的所有标签
 	if len(req.Tags) > 0 {
-		tags, err := tagDao.GetAll(map[string]interface{}{
-			"tag_name": req.Tags,
-			"user_id":  userId,
-		})
-		if err != nil {
-			log.Logger.Errorf("get tags info err:%+v", err)
-			return nil, errors.New("服务器错误")
-		}
-		tagNames := make([]string, 0)
-		for _, v := range tags {
-			tagNames = append(tagNames, v.TagName)
-
-			if tagArr, ok := tagsMap[v.BlogId]; ok {
-				tagArr = append(tagArr, v.TagName)
-				tagsMap[v.BlogId] = tagArr
-			} else {
-				tagArr = make([]string, 0)
-				tagsMap[v.BlogId] = tagArr
-			}
-		}
-		cond["tag"] = tagNames
+		tagCond["tag_name"] = req.Tags
 	}
-
-	blogs, err := blogDao.GetAll(cond)
-
+	tagCond["user_id"] = userId
+	tags, err := tagDao.GetAll(tagCond)
+	if err != nil {
+		log.Logger.Errorf("get tags info err:%+v", err)
+		return nil, errors.New("服务器错误")
+	}
+	blogIds := make([]int64, 0)
+	for _, v := range tags {
+		blogIds = append(blogIds, v.BlogId)
+		if tagArr, ok := tagsMap[v.BlogId]; ok {
+			tagArr = append(tagArr, v.TagName)
+			tagsMap[v.BlogId] = tagArr
+		} else {
+			tagArr = make([]string, 0)
+			tagArr = append(tagArr, v.TagName)
+			tagsMap[v.BlogId] = tagArr
+		}
+	}
+	blogCond := make(map[string]interface{})
+	if len(req.Tags) > 0 {
+		blogCond["blog_id"] = blogIds
+	}
+	//获取博客
+	blogs, err := blogDao.GetAll(blogCond)
 	if err != nil {
 		log.Logger.Errorf("get blogs info err:%+v", err)
 		return nil, errors.New("服务器错误")
@@ -97,6 +98,30 @@ func CreateBlog(userId int64, req *dto.BlogCreateReq) error {
 }
 
 func EditBlog(userId int64, req *dto.BlogEditReq) error {
-
+	blogDao := blog_dao.BlogDaoNew()
+	tagDao := tag_dao.TagDaoNew()
+	cond := map[string]interface{}{
+		"blog_id": req.BlogId,
+		"user_id": userId,
+	}
+	_ = blogDao.Update(cond, map[string]interface{}{
+		"title":       req.Title,
+		"content":     req.Content,
+		"update_time": time.Now().Unix(),
+	})
+	tagDao.Delete(cond)
+	tagInfos := make([]*entity.Tag, 0)
+	for _, v := range req.Tags {
+		temp := entity.Tag{
+			Userid:     userId,
+			TagName:    v,
+			BlogId:     req.BlogId,
+			UpdateTime: time.Now().Unix(),
+			CreateTime: time.Now().Unix(),
+		}
+		tagInfos = append(tagInfos, &temp)
+	}
+	//tags写入数据库
+	tagDao.BatchAdd(tagInfos)
 	return nil
 }

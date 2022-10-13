@@ -32,6 +32,7 @@ func CreateBlog(c *gin.Context) {
 	userId := util.GetCurrentUser(c)
 	if userId == "" {
 		rsp.Error(c, errors.New("请先登录").Error())
+		return
 	}
 	uid, _ := strconv.ParseInt(userId, 10, 64)
 
@@ -52,6 +53,7 @@ func EditBlog(c *gin.Context) {
 	userId := util.GetCurrentUser(c)
 	if userId == "" {
 		rsp.Error(c, errors.New("请先登录").Error())
+		return
 	}
 	uid, _ := strconv.ParseInt(userId, 10, 64)
 

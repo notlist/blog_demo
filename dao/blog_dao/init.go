@@ -10,7 +10,7 @@ type BlogDao interface {
 	Add(user *entity.Blog) error
 	GetAll(cond map[string]interface{}) ([]*entity.Blog, error)
 	GetOne(cond map[string]interface{}) (*entity.Blog, error)
-	Update(cond map[string]interface{}, updateData entity.Blog) error
+	Update(cond map[string]interface{}, updateData map[string]interface{}) error
 	Delete(cond map[string]interface{}) error
 }
 
