@@ -16,7 +16,7 @@ func main() {
 	//程序退出关闭数据库连接
 	//初始化log
 	log.Init()
-	//绑定模型
+	//绑定模型.
 	//mysql.SqlSession.AutoMigrate(&entity.User{})
 	//注册路由
 	r := routes.SetRouter()
