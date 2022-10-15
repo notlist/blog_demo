@@ -2,12 +2,16 @@ package main
 
 import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"goadmin/common/config"
 	"goadmin/common/log"
 	"goadmin/common/mysql"
 	"goadmin/routes"
 )
 
 func main() {
+	//初始化config
+	config.InitConf()
+
 	//初始化数据库
 	err := mysql.InitMySql()
 	if err != nil {
