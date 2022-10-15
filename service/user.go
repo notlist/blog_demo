@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"goadmin/common/log"
-	"goadmin/common/util"
+	"goadmin/common/session"
 	"goadmin/dao/user_dao"
 	"goadmin/dto"
 	"goadmin/entity"
@@ -56,6 +56,6 @@ func LoginUser(c *gin.Context, req *dto.UserAddReq) (err error) {
 	if info == nil {
 		return errors.New("用户名或密码错误")
 	}
-	util.SetCurrentUser(c, strconv.FormatInt(info.UserId, 10))
+	session.SetCurrentUser(c, strconv.FormatInt(info.UserId, 10))
 	return nil
 }

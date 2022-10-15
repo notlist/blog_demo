@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"goadmin/common/rsp"
-	"goadmin/common/util"
+	"goadmin/common/session"
 	"goadmin/dto"
 	"goadmin/service"
 	"strconv"
@@ -29,7 +29,7 @@ func CreateBlog(c *gin.Context) {
 
 	c.BindJSON(&req)
 
-	userId := util.GetCurrentUser(c)
+	userId := session.GetCurrentUser(c)
 	if userId == "" {
 		rsp.Error(c, errors.New("请先登录").Error())
 		return
@@ -50,7 +50,7 @@ func EditBlog(c *gin.Context) {
 
 	c.BindJSON(&req)
 
-	userId := util.GetCurrentUser(c)
+	userId := session.GetCurrentUser(c)
 	if userId == "" {
 		rsp.Error(c, errors.New("请先登录").Error())
 		return
@@ -71,7 +71,7 @@ func DeleteBlog(c *gin.Context) {
 
 	c.BindJSON(&req)
 
-	userId := util.GetCurrentUser(c)
+	userId := session.GetCurrentUser(c)
 	if userId == "" {
 		rsp.Error(c, errors.New("请先登录").Error())
 		return
