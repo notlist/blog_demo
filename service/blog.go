@@ -42,6 +42,7 @@ func BlogList(userId int64, req *dto.BlogListReq) ([]dto.BlogListResp, error) {
 		}
 	}
 	blogCond := make(map[string]interface{})
+	blogCond["user_id"] = req.UserId
 	if len(req.Tags) > 0 {
 		blogCond["blog_id"] = blogIds
 	}

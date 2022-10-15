@@ -6,7 +6,7 @@ import (
 	"gopkg.in/yaml.v2"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"io/ioutil"
+	"os"
 )
 
 const DRIVER = "mysql"
@@ -24,7 +24,7 @@ type Conf struct {
 }
 
 func (c *Conf) getConf() *Conf {
-	yamlFile, err := ioutil.ReadFile("application.yaml")
+	yamlFile, err := os.ReadFile("application.yaml")
 	if err != nil {
 		fmt.Println(err.Error())
 	}
