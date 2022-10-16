@@ -88,5 +88,15 @@ func DeleteBlog(c *gin.Context) {
 }
 
 func BLogDetail(c *gin.Context) {
+	var req dto.BlogDetailReq
 
+	c.BindJSON(&req)
+
+	res, err := service.BLogDetail(&req)
+
+	if err != nil {
+		rsp.Error(c, err.Error())
+	} else {
+		rsp.Success(c, "success", res)
+	}
 }

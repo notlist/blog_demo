@@ -28,3 +28,7 @@ type BlogEditReq struct {
 type BlogDeleteReq struct {
 	BlogId int64 `json:"blog_id"`
 }
+
+type BlogDetailReq struct {
+	BlogId int64 `json:"blog_id"`
+}

@@ -14,6 +14,11 @@ type Conf struct {
 		DbName   string `yaml:"dbname"`
 		Port     string `yaml:"post"`
 	}
+
+	Redis struct {
+		Url  string `yaml:"url"`
+		User string `yaml:"user"`
+	}
 }
 
 var Config = &Conf{}

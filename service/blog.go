@@ -147,3 +147,45 @@ func DeleteBlog(userId int64, req *dto.BlogDeleteReq) error {
 	err = tagDao.Delete(cond)
 	return err
 }
+
+func BLogDetail(req *dto.BlogDetailReq) (*dto.BlogDetailResp, error) {
+	blogDao := blog_dao.BlogDaoNew()
+	tagDao := tag_dao.TagDaoNew()
+
+	cond := map[string]interface{}{
+		"blog_id": req.BlogId,
+	}
+	res, err := blogDao.GetOne(cond)
+	if err != nil {
+		log.Logger.Errorf("get blog data err: %+v", err)
+		return nil, err
+	}
+	if res == nil {
+		return nil, nil
+	}
+
+	data := &dto.BlogDetailResp{
+		BlogId:     res.BlogId,
+		Title:      res.Title,
+		Content:    res.Content,
+		UpdateTime: res.UpdateTime,
+		CreateTime: res.CreateTime,
+	}
+
+	tagsRes, err := tagDao.GetAll(cond)
+	if err != nil {
+		log.Logger.Errorf("get tags data err: %+v", err)
+		return nil, err
+	}
+	if tagsRes == nil {
+		return data, nil
+	}
+	tags := make([]string, 0)
+	for _, v := range tagsRes {
+		tags = append(tags, v.TagName)
+	}
+
+	data.Tags = tags
+
+	return data, nil
+}
