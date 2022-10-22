@@ -10,7 +10,6 @@ import (
 	"time"
 )
 
-// TODO 更改根据标签的查询查询
 func BlogList(userId int64, req *dto.BlogListReq) ([]dto.BlogListResp, error) {
 	blogDao := blog_dao.BlogDaoNew()
 	tagDao := tag_dao.TagDaoNew()
